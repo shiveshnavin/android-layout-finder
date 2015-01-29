@@ -42,12 +42,14 @@ function generateJavaFromTree() {
 }
 
 function generateJavaFromTreeMv(selected) {
+   
 	var result = "";
 	for ( var i = 0; i < selected.length; i++ ) {
 		var node = selected[i];
-		result += "\tprivate " + node.className + " " + node.varName + ";\n";
+		//result += "\tprivate " + node.className + " " + node.varName + ";\n";
+		result += "\tprivate " + node.className + " " + node.var_id + ";\n";
 	}
-
+	
 	var parentviewparam = $("#chk_mv_parentviewparam").is(":checked");
 	var parentview = $("#edt_mv_parentview").val();
 	var clicklisteners = $("#chk_mv_clicklisteners").is(":checked");
@@ -63,7 +65,8 @@ function generateJavaFromTreeMv(selected) {
 	result += "\tprivate void findViews("+func_params+") {\n";
 	for ( var i = 0; i < selected.length; i++ ) {
 		var node = selected[i];
-		result += "\t\t" + node.varName + " = (" + node.className + ")" + getFindViewCode( parentview_dot, node ) + ";\n";
+		//result += "\t\t" + node.varName + " = (" + node.className + ")" + getFindViewCode( parentview_dot, node ) + ";\n";
+		result += "\t\t" + node.var_id + " = (" + node.className + ")" + getFindViewCode( parentview_dot, node ) + ";\n";
 		// http://stackoverflow.com/a/2548133
 		if ( node.className.indexOf( "Button", node.className.length-6 ) !== -1 ) {
 			buttons.push( node );
@@ -74,7 +77,8 @@ function generateJavaFromTreeMv(selected) {
 		result += "\n";
 		for ( var i = 0; i < buttons.length; i++ ) {
 			var btn = buttons[i];
-			result += "\t\t" + btn.varName + ".setOnClickListener( this );\n";
+			//result += "\t\t" + btn.varName + ".setOnClickListener( this );\n";
+			result += "\t\t" + btn.var_id + ".setOnClickListener( this );\n";
 		}
 	}
 	
@@ -92,8 +96,10 @@ function generateJavaFromTreeMv(selected) {
 			} else {
 				result += " else ";
 			}
-			result += "if ( v == " + btn.varName + " ) {\n";
-			result += "\t\t\t// Handle clicks for " + btn.varName + "\n";
+			//result += "if ( v == " + btn.varName + " ) {\n";
+			//result += "\t\t\t// Handle clicks for " + btn.varName + "\n";
+			result += "if ( v == " + btn.var_id + " ) {\n";
+			result += "\t\t\t// Handle clicks for " + btn.var_id + "\n";
 			result += "\t\t}";
 		}
 		result += "\n\t}\n";
@@ -151,7 +157,8 @@ function generateJavaFromTreeVh(selected, root, forceRoot) {
 	
 	for ( var i = 0; i < selected.length; i++ ) {
 		var node = selected[i];
-		result += "\tpublic final " + node.className + " " + node.varName + ";\n";
+		//result += "\tpublic final " + node.className + " " + node.varName + ";\n";
+		result += "\tpublic final " + node.className + " " + node.var_id + ";\n";
 	}
 	result += "\n";
 	result += "\t" + visibility + className+"(";
@@ -160,7 +167,8 @@ function generateJavaFromTreeVh(selected, root, forceRoot) {
 //	}
 	for ( var i = 0; i < selected.length; i++ ) {
 		var node = selected[i];
-		result += node.className + " " + node.varName;
+		//result += node.className + " " + node.varName;
+		result += node.className + " " + node.var_id;
 		if ( i < selected.length - 1 ) {
 			result += ", ";
 		}
@@ -168,7 +176,8 @@ function generateJavaFromTreeVh(selected, root, forceRoot) {
 	result += ") {\n";
 	for ( var i = 0; i < selected.length; i++ ) {
 		var node = selected[i];
-		result += "\t\tthis." + node.varName + " = " + node.varName + ";\n";
+		//result += "\t\tthis." + node.varName + " = " + node.varName + ";\n";
+		result += "\t\tthis." + node.var_id + " = " + node.var_id + ";\n";
 	}
 	
 	result += "\t}\n\n";
@@ -180,7 +189,8 @@ function generateJavaFromTreeVh(selected, root, forceRoot) {
 		if ( node["is_root"] ) {
 			continue;
 		}
-		result += "\t\t" + node.className + " " + node.varName + " = (" + node.className + ")" + getFindViewCode( parentview_dot, node ) + ";\n";
+		//result += "\t\t" + node.className + " " + node.varName + " = (" + node.className + ")" + getFindViewCode( parentview_dot, node ) + ";\n";
+		result += "\t\t" + node.className + " " + node.var_id + " = (" + node.className + ")" + getFindViewCode( parentview_dot, node ) + ";\n";
 	}		
 	
 	result += "\t\treturn new "+className+"( ";
@@ -189,7 +199,8 @@ function generateJavaFromTreeVh(selected, root, forceRoot) {
 //	}
 	for ( var i = 0; i < selected.length; i++ ) {
 		var node = selected[i];
-		result += node.varName;
+		//result += node.varName;
+		result += node.var_id;
 		if ( i < selected.length - 1 ) {
 			result += ", ";
 		}
@@ -328,13 +339,15 @@ function generateJavaFromTreeRg(selected) {
 	$.each( selected, function(i,node) {
 		result += "\t@InjectView(" + node.java_id + ") ";
 		if ( linebreak ) {
-			result += "\n\tprivate " + node.className + " " + node.varName + ";\n";
+			//result += "\n\tprivate " + node.className + " " + node.varName + ";\n";
+			result += "\n\tprivate " + node.className + " " + node.var_id + ";\n";
 		} else {
 			var padlength = longestVar - node.var_id.length;
 			for ( var i = 0; i < padlength; i++ ) {
 				result += " ";
 			}
-			result += "private " + node.className + " " + node.varName + ";\n";
+			//result += "private " + node.className + " " + node.varName + ";\n";
+			result += "private " + node.className + " " + node.var_id + ";\n";
 		}
 	});
 	
