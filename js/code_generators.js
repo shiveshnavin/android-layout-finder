@@ -360,10 +360,10 @@ function tabEachLine( input ) {
 
 function getFindViewCode( parentview_dot, node ) {
 	if ( node.type == "view" ) {
-		return parentview_dot + " findViewById( "+node.java_id+" )";
+		return parentview_dot + " findViewById("+node.java_id+")";
 	} else if ( node.type == "fragment") {
 		var fragmentMan = $("#chk_support").is(":checked") ? "getSupportFragmentManager()" : "getFragmentManager()";
-		return fragmentMan + ".findFragmentById( "+node.java_id+" )";
+		return fragmentMan + ".findFragmentById("+node.java_id+")";
 	}
 }
 
