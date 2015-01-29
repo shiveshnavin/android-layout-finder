@@ -1,2 +1,2 @@
-# android-layout-finder
-The Android Layout Finder helps you create the code that ties your Android UI and Java code together.
+
+> Android Layout Finder。-- [项目主页](http://dusunboy.github.io/android-layout-finder)
